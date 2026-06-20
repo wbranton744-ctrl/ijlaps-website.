@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details — IJLAPS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;color:#1a1a2e;background:#f9fafb;line-height:1.6}
+        a{text-decoration:none;color:inherit}
+        ul{list-style:none}
+        img{max-width:100%;display:block}
+        :root{
+            --green:#089632;--green-dark:#004900;--green-light:#e8f5e9;
+            --gold:#DF9A2A;--gold-light:#fef3e0;--gold-dark:#a86c00;
+            --white:#fff;--off-white:#f9fafb;--dark:#1a1a2e;
+            --gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-600:#4b5563;
+            --shadow:0 4px 24px rgba(0,0,0,0.08);--shadow-lg:0 8px 40px rgba(0,0,0,0.12);
+            --radius:12px;--transition:all 0.3s ease
+        }
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+        /* ===== TOP BAR ===== */
+        .top-bar{background:var(--green-dark);color:var(--white);font-size:.8rem;padding:8px 0}
+        .top-bar .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+        .top-bar a{color:var(--gold)}
+        .top-bar .contact-info span{margin-right:20px}
+
+        /* ===== HEADER ===== */
+        .header{background:rgba(255,255,255,.96);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(0,0,0,.06);position:sticky;top:0;z-index:1000}
+        .header .container{display:flex;justify-content:space-between;align-items:center;padding:10px 20px}
+        .logo{display:flex;align-items:center;gap:14px;text-decoration:none}
+        .logo-img{height:55px;width:auto;object-fit:contain}
+        .logo-text h1{font-size:18px;color:var(--dark);font-weight:800}
+        .logo-text span{font-size:.6rem;color:var(--gray-600);text-transform:uppercase;letter-spacing:1px;display:block}
+        .header-right{display:flex;align-items:center;gap:20px}
+        .header-right a{font-size:.85rem;font-weight:500;color:var(--dark);transition:var(--transition)}
+        .header-right a:hover{color:var(--green)}
+        .header-right .btn-back{background:var(--green-light);color:var(--green);padding:8px 20px;border-radius:50px;font-weight:600;font-size:.85rem;transition:var(--transition)}
+        .header-right .btn-back:hover{background:var(--green);color:var(--white);transform:translateY(-2px)}
+
+        /* ===== BREADCRUMB ===== */
+        .breadcrumb-bar{background:linear-gradient(135deg,var(--green),var(--green-dark));padding:24px 0;position:relative;overflow:hidden}
+        .breadcrumb-bar::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='g' patternUnits='userSpaceOnUse' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='15' fill='%23ffffff' fill-opacity='0.04'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3C/svg%3E");pointer-events:none}
+        .breadcrumb-bar .container{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+        .breadcrumb-bar h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:800;color:var(--white)}
+        .breadcrumb-bar h1 span{color:var(--gold)}
+        .breadcrumb-nav{display:flex;align-items:center;gap:8px;font-size:.85rem;color:rgba(255,255,255,.7)}
+        .breadcrumb-nav a{color:rgba(255,255,255,.7);transition:var(--transition)}
+        .breadcrumb-nav a:hover{color:var(--gold)}
+        .breadcrumb-nav .active{color:var(--gold)}
+
+        /* ===== COURSE DETAILS LAYOUT ===== */
+        .course-details{padding:60px 0}
+        .course-details .container{display:grid;grid-template-columns:2fr 1fr;gap:40px;align-items:start}
+
+        /* Left Column */
+        .course-main-image{width:100%;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:30px}
+        .course-main-image img{width:100%;height:400px;object-fit:cover}
+        .course-info-card{background:var(--white);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);margin-bottom:24px}
+        .course-info-card .course-badge{display:inline-block;background:var(--green-light);color:var(--green);padding:4px 16px;border-radius:50px;font-size:.75rem;font-weight:600;margin-bottom:14px}
+        .course-info-card h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:800;color:var(--dark);margin-bottom:12px}
+        .course-info-card .course-meta{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--gray-200)}
+        .course-info-card .course-meta span{font-size:.85rem;color:var(--gray-600);display:flex;align-items:center;gap:6px}
+        .course-info-card .course-meta i{color:var(--gold)}
+        .course-info-card p{color:var(--gray-600);line-height:1.8;font-size:.95rem;margin-bottom:16px}
+        .course-info-card h3{font-size:1.2rem;font-weight:700;color:var(--dark);margin:24px 0 12px}
+        .course-info-card h3:first-of-type{margin-top:0}
+
+        /* Tab System */
+        .course-tabs{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+        .tab-headers{display:flex;border-bottom:2px solid var(--gray-200);overflow-x:auto}
+        .tab-header{padding:16px 24px;font-size:.85rem;font-weight:600;color:var(--gray-600);cursor:pointer;transition:var(--transition);border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap}
+        .tab-header:hover{color:var(--green)}
+        .tab-header.active{color:var(--green);border-bottom-color:var(--gold)}
+        .tab-content{padding:32px;display:none}
+        .tab-content.active{display:block}
+        .tab-content ul li{padding:10px 0;display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--gray-100);font-size:.9rem;color:var(--gray-600)}
+        .tab-content ul li:last-child{border-bottom:none}
+        .tab-content ul li i{color:var(--green);margin-top:3px;flex-shrink:0}
+        .tab-content p{color:var(--gray-600);line-height:1.8;font-size:.9rem;margin-bottom:12px}
+        .tab-content .level-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+        .tab-content .level-card{background:var(--off-white);border:1px solid var(--gray-200);border-radius:8px;padding:16px;text-align:center;transition:var(--transition)}
+        .tab-content .level-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+        .tab-content .level-card .level-name{font-weight:700;color:var(--green);font-size:1.1rem}
+        .tab-content .level-card .level-desc{font-size:.75rem;color:var(--gray-600);margin-top:4px}
+
+        /* Right Sidebar */
+        .course-sidebar{position:sticky;top:100px}
+        .sidebar-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;margin-bottom:24px}
+        .sidebar-card h4{font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--gold-light)}
+        .sidebar-card .info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-100);font-size:.85rem}
+        .sidebar-card .info-row:last-child{border-bottom:none}
+        .sidebar-card .info-row .label{color:var(--gray-600)}
+        .sidebar-card .info-row .value{font-weight:600;color:var(--dark)}
+        .sidebar-card .btn-enroll-now{display:block;background:var(--green);color:var(--white);text-align:center;padding:14px;border-radius:50px;font-weight:700;font-size:.95rem;transition:var(--transition);margin-top:16px}
+        .sidebar-card .btn-enroll-now:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,118,36,.3)}
+        .sidebar-card .btn-tour{display:block;background:transparent;color:var(--dark);text-align:center;padding:12px;border-radius:50px;font-weight:600;font-size:.85rem;border:2px solid var(--gray-200);transition:var(--transition);margin-top:10px}
+        .sidebar-card .btn-tour:hover{border-color:var(--gold);color:var(--gold-dark)}
+        .fee-amount{font-family:'Playfair Display',serif;font-size:2rem;font-weight:800;color:var(--green);text-align:center;margin:10px 0}
+        .fee-amount small{font-size:.9rem;color:var(--gray-600);font-weight:400}
+
+        /* Related Programs */
+        .related-programs{padding:60px 0;background:var(--off-white)}
+        .related-programs .section-title{text-align:center;margin-bottom:40px}
+        .related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+        .related-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:var(--transition);cursor:pointer}
+        .related-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+        .related-card img{width:100%;height:140px;object-fit:cover}
+        .related-card .related-body{padding:16px}
+        .related-card .related-body h4{font-size:.95rem;font-weight:700;color:var(--dark);margin-bottom:4px}
+        .related-card .related-body p{font-size:.75rem;color:var(--gray-600)}
+        .related-card .related-body .related-tag{display:inline-block;background:var(--green-light);color:var(--green);padding:2px 12px;border-radius:50px;font-size:.65rem;font-weight:600;margin-top:8px}
+
+        /* ===== FOOTER ===== */
+        .footer{background:#0a1a0a;color:rgba(255,255,255,.8);padding:40px 0 0;margin-top:0}
+        .footer .container{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+        .footer-brand p{font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.6);margin-bottom:16px}
+        .footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+        .footer-logo img{height:40px;width:auto}
+        .footer-logo h3{color:var(--white);font-size:.9rem;font-family:'Playfair Display',serif}
+        .footer h4{color:var(--white);font-size:1rem;font-weight:700;margin-bottom:16px;padding-bottom:8px;position:relative}
+        .footer h4::after{content:'';position:absolute;bottom:0;left:0;width:30px;height:2px;background:var(--gold)}
+        .footer ul li{margin-bottom:8px}
+        .footer ul li a{color:rgba(255,255,255,.6);font-size:.8rem;transition:var(--transition)}
+        .footer ul li a:hover{color:var(--gold);padding-left:4px}
+        .footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding:16px 0;margin-top:30px;text-align:center}
+        .footer-bottom p{font-size:.75rem;color:rgba(255,255,255,.4)}
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:968px){
+            .course-details .container{grid-template-columns:1fr}
+            .course-sidebar{position:static}
+            .related-grid{grid-template-columns:repeat(2,1fr)}
+            .footer .container{grid-template-columns:1fr 1fr}
+            .footer-brand{grid-column:1/-1}
+        }
+        @media(max-width:768px){
+            .breadcrumb-bar h1{font-size:1.4rem}
+            .course-main-image img{height:240px}
+            .tab-header{padding:12px 16px;font-size:.8rem}
+            .tab-content{padding:20px}
+            .related-grid{grid-template-columns:1fr}
+            .footer .container{grid-template-columns:1fr}
+            .header-right .btn-back{padding:6px 14px;font-size:.8rem}
+        }
+
+        /* ===== LOADING / ERROR ===== */
+        .course-error{text-align:center;padding:60px 20px}
+        .course-error i{font-size:3rem;color:var(--gold);margin-bottom:16px}
+        .course-error h2{font-size:1.5rem;color:var(--dark);margin-bottom:8px}
+        .course-error p{color:var(--gray-600)}
+        .course-error a{color:var(--green);font-weight:600;text-decoration:underline}
+
+        /* ===== ANIMATIONS ===== */
+        .reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+        .reveal.revealed{opacity:1;transform:translateY(0)}
+        .back-to-top{position:fixed;bottom:30px;right:30px;width:44px;height:44px;border-radius:50%;background:var(--green);color:var(--white);border:none;font-size:1.1rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,118,36,.3);transition:var(--transition);opacity:0;transform:translateY(20px);pointer-events:none;z-index:999;display:flex;align-items:center;justify-content:center}
+        .back-to-top.visible{opacity:1;transform:translateY(0);pointer-events:all}
+        .back-to-top:hover{background:var(--gold);transform:translateY(-3px)}
+    </style>
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<div class="top-bar">
+    <div class="container">
+        <div class="contact-info">
+            <span><i class="fa-solid fa-phone"></i> +254 757301977 / +254 748135394</span>
+            <span><i class="fa-solid fa-envelope"></i> ijlapsutawala@gmail.com</span>
+            <span><i class="fa-solid fa-location-dot"></i> Utawala, Nairobi</span>
+        </div>
+        <div><a href="#"><i class="fa-regular fa-calendar"></i> Since 2007</a></div>
+    </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="ijlaps.png.png" alt="IJLAPS Logo" class="logo-img" onerror="this.style.display='none'">
+            <div class="logo-text">
+                <h1>International Jaamia of Languages & Professional Studies</h1>
+                <span>Since 2007 — Course Details</span>
+            </div>
+        </a>
+        <div class="header-right">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="index.html#programs">Programs</a>
+            <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+</header>
+
+<!-- ===== BREADCRUMB ===== -->
+<section class="breadcrumb-bar" id="breadcrumbBar">
+    <div class="container">
+        <div>
+            <h1 id="courseTitleMain">Course <span>Details</span></h1>
+        </div>
+        <div class="breadcrumb-nav">
+            <a href="index.html">Home</a>
+            <i class="fa-solid fa-chevron-right" style="font-size:.6rem"></i>
+            <a href="index.html#programs">Programs</a>
+            <i class="fa-solid fa-chevron-right" style="font-size:.6rem"></i>
+            <span class="active" id="breadcrumbCourse">Course Details</span>
+        </div>
+    </div>
+</section>
+
+<!-- ===== COURSE DETAILS ===== -->
+<section class="course-details">
+    <div class="container" id="courseContent">
+
+        <!-- Left Column -->
+        <div class="course-left">
+
+            <!-- Main Image -->
+            <div class="course-main-image reveal" id="courseImageWrap">
+                <img id="courseMainImage" src="" alt="Course Image" onerror="this.style.background='linear-gradient(135deg,#089632,#004900)';this.style.minHeight='400px'">
+            </div>
+
+            <!-- Course Info -->
+            <div class="course-info-card reveal" id="courseInfoCard">
+                <span class="course-badge" id="courseBadge">CEFR Program</span>
+                <h2 id="courseName">Course Name</h2>
+                <div class="course-meta" id="courseMeta">
+                    <span><i class="fa-regular fa-clock"></i> <span id="courseDuration">6-12 months</span></span>
+                    <span><i class="fa-solid fa-layer-group"></i> <span id="courseLevel">Beginner to Advanced</span></span>
+                    <span><i class="fa-solid fa-chalkboard-user"></i> <span id="courseMode">In-Person / Online</span></span>
+                </div>
+                <p id="courseDescription">Loading course information...</p>
+
+                <!-- Tabs -->
+                <div class="course-tabs reveal" style="margin-top:24px">
+                    <div class="tab-headers">
+                        <div class="tab-header active" data-tab="curriculum">Curriculum</div>
+                        <div class="tab-header" data-tab="levels">Levels</div>
+                        <div class="tab-header" data-tab="outcomes">Outcomes</div>
+                        <div class="tab-header" data-tab="fees">Fees</div>
+                    </div>
+                    <div class="tab-content active" id="tab-curriculum">
+                        <p>Comprehensive curriculum covering all essential language skills:</p>
+                        <ul id="curriculumList">
+                            <li><i class="fa-solid fa-check-circle"></i> Speaking & Pronunciation</li>
+                            <li><i class="fa-solid fa-check-circle"></i> Reading Comprehension</li>
+                            <li><i class="fa-solid fa-check-circle"></i> Listening Skills</li>
+                            <li><i class="fa-solid fa-check-circle"></i> Writing & Grammar</li>
+                            <li><i class="fa-solid fa-check-circle"></i> Cultural Studies</li>
+                            <li><i class="fa-solid fa-check-circle"></i> Conversational Practice</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="tab-levels">
+                        <p>Our structured levels follow international standards:</p>
+                        <div class="level-grid" id="levelGrid">
+                            <div class="level-card"><div class="level-name">A1</div><div class="level-desc">Beginner</div></div>
+                            <div class="level-card"><div class="level-name">A2</div><div class="level-desc">Elementary</div></div>
+                            <div class="level-card"><div class="level-name">B1</div><div class="level-desc">Intermediate</div></div>
+                            <div class="level-card"><div class="level-name">B2</div><div class="level-desc">Upper Intermediate</div></div>
+                            <div class="level-card"><div class="level-name">C1</div><div class="level-desc">Advanced</div></div>
+                            <div class="level-card"><div class="level-name">C2</div><div class="level-desc">Proficiency</div></div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tab-outcomes">
+                        <p>Upon completion you will:</p>
+                        <ul id="outcomesList">
+                            <li><i class="fa-solid fa-star"></i> Communicate fluently in professional settings</li>
+                            <li><i class="fa-solid fa-star"></i> Read and understand complex texts</li>
+                            <li><i class="fa-solid fa-star"></i> Write formal and informal correspondence</li>
+                            <li><i class="fa-solid fa-star"></i> Understand cultural nuances and etiquette</li>
+                            <li><i class="fa-solid fa-star"></i> Prepare for internationally recognized exams</li>
+                            <li><i class="fa-solid fa-star"></i> Gain confidence for overseas employment</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="tab-fees">
+                        <p>Affordable fee structure designed for every learner:</p>
+                        <ul id="feesList">
+                            <li><i class="fa-solid fa-money-bill-wave"></i> <strong>Registration Fee:</strong> KES 1,000</li>
+                            <li><i class="fa-solid fa-money-bill-wave"></i> <strong>Tuition (per month):</strong> KES 4,800 - 14,400</li>
+                            <li><i class="fa-solid fa-money-bill-wave"></i> <strong>Assessment Fee:</strong> KES 2,000 (Basic) / 3,000 (Intermediate) / 4,000 (Advanced)</li>
+                            <li><i class="fa-solid fa-money-bill-wave"></i> <strong>Study Materials:</strong> Included</li>
+                            <li><i class="fa-solid fa-gift"></i> <strong>Installment Plans:</strong> Available</li>
+                            <li><i class="fa-solid fa-gift"></i> <strong>Scholarships:</strong> Apply for financial aid</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="course-sidebar">
+            <div class="sidebar-card reveal">
+                <h4><i class="fa-solid fa-circle-info"></i> Course Info</h4>
+                <div class="info-row"><span class="label">Duration</span><span class="value" id="sidebarDuration">6-12 months</span></div>
+                <div class="info-row"><span class="label">Level</span><span class="value" id="sidebarLevel">All Levels</span></div>
+                <div class="info-row"><span class="label">Class Size</span><span class="value"> Max 40 students </span></div>
+                <div class="info-row"><span class="label">Delivery</span><span class="value" id="sidebarDelivery">In-Person / Online</span></div>
+                <div class="info-row"><span class="label">Certification</span><span class="value" id="sidebarCert">CEFR Certificate</span></div>
+                <div class="info-row"><span class="label">Language</span><span class="value">Native Instructors</span></div>
+                <div class="fee-amount" id="sidebarFee">KES 4,800 - 14,400<small>/month</small></div>
+                <a href="https://kiflaps.ac.ke/register/" class="btn-enroll-now"><i class="fa-solid fa-graduation-cap"></i> Enroll Now</a>
+                <a href="https://youtu.be/IE_siG9p5Qs"class="btn-tour"><i class="fa-regular fa-circle-play"></i> Watch Course Tour</a>
+            </div>
+
+            <div class="sidebar-card reveal">
+                <h4><i class="fa-solid fa-building-columns"></i> Campus</h4>
+                <p style="font-size:.85rem;color:var(--gray-600);line-height:1.7">
+                    <strong>Utawala (Shooters):</strong><br>
+                    +254 796607682 / +254 710609027<br><br>
+                    <strong>Njiru Branch:</strong><br>
+                    +254 780859129<br><br>
+                    <strong>Gathima Branch:</strong><br>
+                    +254 757301977 / +254 748135394
+                </p>
+            </div>
+
+            <div class="sidebar-card reveal">
+                <h4><i class="fa-regular fa-share-from-square"></i> Share</h4>
+                <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">
+    <a href="https://web.facebook.com/IJLAPS" target="_blank" rel="noopener" style="width:36px;height:36px;border-radius:50%;background:#1877F2;color:white;display:flex;align-items:center;justify-content:center;font-size:.85rem" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="https://x.com/ijlaps" target="_blank" rel="noopener" style="width:36px;height:36px;border-radius:50%;background:#000;color:white;display:flex;align-items:center;justify-content:center;font-size:.85rem" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+    <a href="https://www.instagram.com/ijlaps/" target="_blank" rel="noopener" style="width:36px;height:36px;border-radius:50%;background:#E4405F;color:white;display:flex;align-items:center;justify-content:center;font-size:.85rem" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://wa.me/254796607682" target="_blank" rel="noopener" style="width:36px;height:36px;border-radius:50%;background:#25D366;color:white;display:flex;align-items:center;justify-content:center;font-size:.85rem" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+    <a href="https://ke.linkedin.com/company/international-jaamia-of-languages-and-professional-studies" target="_blank" rel="noopener" style="width:36px;height:36px;border-radius:50%;background:#0A66C2;color:white;display:flex;align-items:center;justify-content:center;font-size:.85rem" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== RELATED PROGRAMS ===== -->
+<section class="related-programs">
+    <div class="container">
+        <h2 class="section-title" style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:800">Explore <span style="background:linear-gradient(135deg,var(--green),var(--green-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Other Programs</span></h2>
+        <div class="related-grid" id="relatedGrid">
+
+            <!-- Related cards injected by JavaScript -->
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <img src="ijlaps.png.png" alt="IJLAPS" onerror="this.style.display='none'">
+                <h3>International Jaamia of Languages & Professional Studies</h3>
+            </div>
+            <p>Since 2007, IJLAPS has been transforming lives through language education. We connect cultures and open doors to international opportunities.</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#programs">Programs</a></li>
+                <li><a href="index.html#testimonials">Testimonials</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <ul>
+                <li><a href="tel:+254757301977">+254 757 301 977</a></li>
+                <li><a href="tel:+254748135394">+254 796 607 682</a></li>
+                <li><a href="mailto:ijlapsutawala@gmail.com">ijlapsutawala@gmail.com</a></li>
+                <li><a href="#">Utawala, Nairobi</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p>&copy; 2026 IJLAPS. All rights reserved. | Since 2007</p>
+        </div>
+    </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-arrow-up"></i></button>
+
+<script>
+// ===== COURSE DATA =====
+const courses = {
+    arabic: {
+        name: 'Arabic',
+        badge: 'CEFR Program',
+        duration: '6-12 months',
+        level: 'Beginner to Advanced',
+        mode: 'In-Person / Online',
+        cert: 'CEFR Certificate',
+        fee: '6,000',
+        img: 'arabic-bg.jpg.jpeg',
+        description: 'Master the Arabic language from the alphabet to fluent conversation. Our Arabic program covers Modern Standard Arabic (MSA) with exposure to regional dialects, enabling you to communicate across the Arab world. Expert native instructors with years of teaching experience guide you through a structured CEFR-aligned curriculum. Whether for business, travel, religious studies, or cultural enrichment, this course opens doors to 22+ countries.',
+        curriculum: [
+            'Arabic Alphabet & Phonetics',
+            'Reading & Writing Script',
+            'Grammar (Nahw) & Morphology (Sarf)',
+            'Listening Comprehension',
+            'Conversational Arabic',
+            'Media Arabic & News',
+            'Arabic Calligraphy',
+            'Business Arabic',
+            'Arab Culture & Etiquette'
+        ],
+        levels: [
+            {name: 'A1', desc: 'Beginner — Alphabet & basic phrases'},
+            {name: 'A2', desc: 'Elementary — Simple conversations'},
+            {name: 'B1', desc: 'Intermediate — Daily & work contexts'},
+            {name: 'B2', desc: 'Upper Intermediate — Fluent discussion'},
+            {name: 'C1', desc: 'Advanced — Complex texts & debate'},
+            {name: 'C2', desc: 'Proficiency — Near-native fluency'}
+        ],
+        outcomes: [
+            'Read and write Arabic script fluently',
+            'Hold extended conversations with native speakers',
+            'Understand news broadcasts and media',
+            'Read classical and modern Arabic texts',
+            'Communicate effectively in professional settings',
+            'Prepare for internationally recognized Arabic exams'
+        ],
+        fees: [
+            {item: 'Registration Fee', amount: 'KES 1,500'},
+            {item: 'Tuition (per month)', amount: 'KES 6,000'},
+            {item: 'Assessment (Basic)', amount: 'KES 2,000'},
+            {item: 'Assessment (Intermediate)', amount: 'KES 3,000'},
+            {item: 'Assessment (Advanced)', amount: 'KES 4,000'},
+            {item: 'Study Materials', amount: 'Included'}
+        ]
+    },
+    french: {
+        name: 'French',
+        badge: 'CEFR Program',
+        duration: '6-12 months',
+        level: 'Beginner to Advanced',
+        mode: 'In-Person / Online',
+        cert:  'CEFR Certificate (DELF/DALF aligned)',
+        fee: '6,000',
+        img: 'https://ijlaps.ac.ke/images/program/french.jpg',
+        description: 'Learn the language of love, diplomacy, and international business. Our French program follows the CEFR framework and prepares you for DELF/DALF certification. From beginner to advanced levels, our native-inspired instructors provide immersive learning experiences that build confidence in speaking, reading, writing, and listening across real-world contexts.',
+        curriculum: [
+            'French Pronunciation & Accent',
+            'Grammar & Verb Conjugation',
+            'Reading Comprehension',
+            'Listening Skills',
+            'Conversational French',
+            'Business French',
+            'French Literature & Culture',
+            'DELF/DALF Exam Preparation'
+        ],
+        levels: [
+            {name: 'A1', desc: 'Beginner — Introductions & basics'},
+            {name: 'A2', desc: 'Elementary — Routine tasks'},
+            {name: 'B1', desc: 'Intermediate — Independent travel'},
+            {name: 'B2', desc: 'Upper Intermediate — Fluent work'},
+            {name: 'C1', desc: 'Advanced — Complex ideas'},
+            {name: 'C2', desc: 'Proficiency — Mastery'}
+        ],
+        outcomes: [
+            'Speak French with confidence in daily situations',
+            'Write formal letters and business correspondence',
+            'Understand French media and films',
+            'Prepare for DELF/DALF certification exams',
+            'Work effectively in French-speaking environments',
+            'Appreciate Francophone culture and literature'
+        ],
+        fees: [
+            {item: 'Registration Fee', amount: 'KES 1,500'},
+            {item: 'Tuition (per month)', amount: 'KES 6,000'},
+            {item: 'Assessment (Basic)', amount: 'KES 2,000'},
+            {item: 'Assessment (Intermediate)', amount: 'KES 3,000'},
+            {item: 'Assessment (Advanced)', amount: 'KES 4,000'},
+            {item: 'Study Materials', amount: 'Included'}
+        ]
+    },
+    german: {
+        name: 'German',
+        badge: 'CEFR Program',
+        duration: '6-12 months',
+        level: 'Beginner to Advanced',
+        mode: 'In-Person / Online',
+        cert: 'CEFR Certificate (Goethe aligned)',
+        fee: '7,000',
+        img: 'https://ijlaps.ac.ke/images/program/german.jpg',
+        description: 'Germany is Europe\'s economic powerhouse — and German is the key. Our German program equips you with language skills for work, study, and life in German-speaking countries. Aligned with the CEFR and Goethe-Institut standards, this course offers a pathway to overseas employment, higher education in Germany, and global career mobility.',
+        curriculum: [
+            'German Alphabet & Pronunciation',
+            'Grammar & Sentence Structure',
+            'Reading & Writing Skills',
+            'Listening & Speaking',
+            'Business German',
+            'German Culture & Customs',
+            'Goethe Exam Preparation',
+            'Study & Work in Germany Guide'
+        ],
+        levels: [
+            {name: 'A1', desc: 'Beginner — Basic expressions'},
+            {name: 'A2', desc: 'Elementary — Simple interactions'},
+            {name: 'B1', desc: 'Intermediate — Independent'},
+            {name: 'B2', desc: 'Upper Intermediate — Fluent'},
+            {name: 'C1', desc: 'Advanced — Professional use'},
+            {name: 'C2', desc: 'Proficiency — Near-native'}
+        ],
+        outcomes: [
+            'Communicate fluently in German work environments',
+            'Read German newspapers and technical documents',
+            'Write professional emails and reports',
+            'Prepare for Goethe-Zertifikat exams',
+            'Navigate daily life in Germany, Austria, or Switzerland',
+            'Access German higher education opportunities'
+        ],
+        fees: [
+            {item: 'Registration Fee', amount: 'KES 1,500'},
+            {item: 'Tuition (per month)', amount: 'KES 7,000'},
+            {item: 'Assessment (Basic)', amount: 'KES 2,000'},
+            {item: 'Assessment (Intermediate)', amount: 'KES 3,000'},
+            {item: 'Assessment (Advanced)', amount: 'KES 4,000'},
+            {item: 'Study Materials', amount: 'Included'}
+        ]
+    },
+    japanese: {
+        name: 'Japanese',
+        badge: 'JLPT Program',
+        duration: '6-18 months',
+        level: 'Beginner to Advanced',
+        mode: 'In-Person / Online',
+        cert: 'JLPT Certificate (N5-N1)',
+        fee: '7,500',
+        img: 'https://ijlaps.ac.ke/images/program/japanese.jpg',
+        description: 'Unlock the world of Japanese technology, business, and culture. Our Japanese program follows the JLPT framework from N5 (beginner) to N1 (advanced). Learn Hiragana, Katakana, Kanji, and grammar through immersive methods. Perfect for those seeking opportunities in Japan\'s tech scene, business relations, or cultural appreciation.',
+        curriculum: [
+            'Hiragana & Katakana Writing Systems',
+            'Kanji Characters (graded by JLPT level)',
+            'Grammar & Sentence Patterns',
+            'Listening & Speaking Practice',
+            'Reading Japanese Texts',
+            'Business Japanese (Keigo)',
+            'Japanese Culture & Etiquette',
+            'JLPT Exam Preparation'
+        ],
+        levels: [
+            {name: 'N5', desc: 'Basic — Hiragana/Katakana + 100 Kanji'},
+            {name: 'N4', desc: 'Elementary — 300 Kanji, simple sentences'},
+            {name: 'N3', desc: 'Intermediate — 650 Kanji, daily conversation'},
+            {name: 'N2', desc: 'Upper Intermediate — 1000 Kanji, business'},
+            {name: 'N1', desc: 'Advanced — 2000 Kanji, near-native'}
+        ],
+        outcomes: [
+            'Read and write Japanese using all three scripts',
+            'Hold conversations in social and professional settings',
+            'Understand Japanese media and anime without subtitles',
+            'Pass JLPT N5 through N1 examinations',
+            'Work effectively in Japanese companies',
+            'Navigate Japan confidently for travel or relocation'
+        ],
+        fees: [
+            {item: 'Registration Fee', amount: 'KES 1,500'},
+            {item: 'Tuition (per month)', amount: 'KES 7,500'},
+            {item: 'Assessment Fee', amount: 'KES 2,000 - 4,000'},
+            {item: 'JLPT Exam Registration', amount: 'At cost'},
+            {item: 'Study Materials', amount: 'Included'},
+            {item: 'Cultural Activities', amount: 'Included'}
+        ]
+    },
+    chinese: {
+        name: 'Chinese (Mandarin)',
+        badge: 'HSK Program',
+        duration: '6-24 months',
+        level: 'Beginner to Advanced',
+        mode: 'In-Person / Online',
+        cert: 'HSK Certificate (1-6)',
+        fee: '7,000',
+        img: 'https://ijlaps.ac.ke/images/program/chinese.jpg',
+        description: 'Mandarin Chinese is the most spoken language in the world. Our HSK-aligned program takes you from zero to confident speaker. Master tones, characters, and conversation through our proven methodology. China\'s global economic influence makes Mandarin one of the most valuable languages for career advancement.',
+        curriculum: [
+            'Pinyin & Tones System',
+            'Character Writing (Simplified)',
+            'Grammar Structures',
+            'Listening Comprehension',
+            'Conversational Mandarin',
+            'Business Chinese',
+            'Chinese Culture & History',
+            'HSK Exam Preparation'
+        ],
+        levels: [
+            {name: 'HSK 1', desc: '150 words — Basic greetings'},
+            {name: 'HSK 2', desc: '300 words — Simple conversations'},
+            {name: 'HSK 3', desc: '600 words — Daily topics'},
+            {name: 'HSK 4', desc: '1200 words — Fluent discussion'},
+            {name: 'HSK 5', desc: '2500 words — News & media'},
+            {name: 'HSK 6', desc: '5000+ words — Near-native'}
+        ],
+        outcomes: [
+            'Master Mandarin tones and pronunciation',
+            'Read and write simplified Chinese characters',
+            'Conduct business meetings in Mandarin',
+            'Pass HSK examinations at your target level',
+            'Understand Chinese media and popular culture',
+            'Build bridges for China-Africa trade relations'
+        ],
+        fees: [
+            {item: 'Registration Fee', amount: 'KES 1,500'},
+            {item: 'Tuition (per month)', amount: 'KES 7,000'},
+            {item: 'Assessment Fee', amount: 'KES 2,000 - 4,000'},
+            {item: 'HSK Exam Registration', amount: 'At cost'},
+            {item: 'Study Materials', amount: 'Included'},
+            {item: 'Cultural Workshops', amount: 'Included'}
+        ]
+    },
+    kiswahili: {
+        name: 'Kiswahili',
+        badge: 'CEFR Program',
+        duration: '6-12 months',
+        level: 'Beginner to Advanced',
+        mode: 'In-Person / Online',
+        cert: 'CEFR Certificate',
+        fee: '5,000',
+        img: 'https://ijlaps.ac.ke/images/program/kiswahili.jpg',
+        description: 'Kiswahili is the lingua franca of East Africa with over 200 million speakers. Our program takes you from basic greetings to fluent conversation. Learn from native speakers who bring authentic cultural context to every lesson. Ideal for expats, diplomats, aid workers, and anyone connecting with the East African community.',
+        curriculum: [
+            'Kiswahili Pronunciation',
+            'Noun Classes (Ngeli)',
+            'Verb Conjugation',
+            'Reading & Writing',
+            'Conversational Swahili',
+            'Kiswahili Literature',
+            'East African Culture',
+            'Business & Travel Swahili'
+        ],
+        levels: [
+            {name: 'A1', desc: 'Beginner — Greetings & introductions'},
+            {name: 'A2', desc: 'Elementary — Daily routines'},
+            {name: 'B1', desc: 'Intermediate — Work & travel'},
+            {name: 'B2', desc: 'Upper Intermediate — Fluent'},
+            {name: 'C1', desc: 'Advanced — Complex topics'},
+            {name: 'C2', desc: 'Proficiency — Mastery'}
+        ],
+        outcomes: [
+            'Speak Kiswahili confidently in daily situations',
+            'Understand East African media and music',
+            'Read Swahili literature and newspapers',
+            'Work effectively in Swahili-speaking environments',
+            'Build deeper connections with local communities',
+            'Navigate East Africa with ease'
+        ],
+        fees: [
+            {item: 'Registration Fee', amount: 'KES 1,000'},
+            {item: 'Tuition (per month)', amount: 'KES 5,000'},
+            {item: 'Assessment Fee', amount: 'KES 1,500 - 3,000'},
+            {item: 'Study Materials', amount: 'Included'},
+            {item: 'Cultural Excursions', amount: 'Optional'}
+        ]
+    },
+    spanish: {
+        name: 'Spanish',
+        badge: 'CEFR Program',
+        duration: '6-12 months',
+        level: 'Beginner to Advanced',
+        mode: 'In-Person / Online',
+        cert: 'CEFR Certificate (DELE aligned)',
+        fee: '6,500',
+        img: 'https://ijlaps.ac.ke/images/program/spanish.jpg',
+        description: 'Spanish is the second most spoken native language in the world with 500+ million speakers across 21 countries. Our DELE-aligned program takes you from zero to confident communicator. Learn through immersive methods with a focus on real-world application for travel, business, and cultural exploration.',
+        curriculum: [
+            'Spanish Pronunciation & Accent',
+            'Grammar & Verb Tenses',
+            'Reading Comprehension',
+            'Listening Skills',
+            'Conversational Spanish',
+            'Business Spanish',
+            'Latin American & Spanish Culture',
+            'DELE Exam Preparation'
+        ],
+        levels: [
+            {name: 'A1', desc: 'Beginner — Basic phrases'},
+            {name: 'A2', desc: 'Elementary — Simple conversations'},
+            {name: 'B1', desc: 'Intermediate — Travel contexts'},
+            {name: 'B2', desc: 'Upper Intermediate — Fluent work'},
+            {name: 'C1', desc: 'Advanced — Complex topics'},
+            {name: 'C2', desc: 'Proficiency — Mastery'}
+        ],
+        outcomes: [
+            'Speak Spanish fluently in professional settings',
+            'Read Spanish literature and press',
+            'Conduct business across Latin America & Spain',
+            'Prepare for DELE certification exams',
+            'Understand Spanish-language media and films',
+            'Travel confidently across the Spanish-speaking world'
+        ],
+        fees: [
+            {item: 'Registration Fee', amount: 'KES 1,500'},
+            {item: 'Tuition (per month)', amount: 'KES 6,500'},
+            {item: 'Assessment Fee', amount: 'KES 2,000 - 4,000'},
+            {item: 'DELE Exam Registration', amount: 'At cost'},
+            {item: 'Study Materials', amount: 'Included'},
+            {item: 'Conversation Clubs', amount: 'Free'}
+        ]
+    },
+    italian: {
+        name: 'Italian',
+        badge: 'CEFR Program',
+        duration: '6-12 months',
+        level: 'Beginner to Advanced',
+        mode: 'In-Person / Online',
+        cert: 'CEFR Certificate (CILS aligned)',
+        fee: '6,500',
+        img: 'https://ijlaps.ac.ke/images/program/italian.jpg',
+        description: 'Italian — the language of art, music, cuisine, and design. Our CILS-aligned program immerses you in la dolce vita while building practical communication skills. From beginner to advanced, our instructors bring Italy\'s rich cultural heritage into every lesson.',
+        curriculum: [
+            'Italian Pronunciation',
+            'Grammar & Conjugation',
+            'Reading & Writing',
+            'Listening & Speaking',
+            'Conversational Italian',
+            'Italian Culture & Cuisine',
+            'Art & Music Vocabulary',
+            'CILS Exam Preparation'
+        ],
+        levels: [
+            {name: 'A1', desc: 'Beginner — Basic expressions'},
+            {name: 'A2', desc: 'Elementary — Simple interactions'},
+            {name: 'B1', desc: 'Intermediate — Independent'},
+            {name: 'B2', desc: 'Upper Intermediate — Fluent'},
+            {name: 'C1', desc: 'Advanced — Professional'},
+            {name: 'C2', desc: 'Proficiency — Mastery'}
+        ],
+        outcomes: [
+            'Speak Italian with confidence and proper accent',
+            'Read Italian literature and newspapers',
+            'Navigate Italian business and social settings',
+            'Prepare for CILS certification exams',
+            'Appreciate Italian art, opera, and cinema',
+            'Connect with Italian heritage and community'
+        ],
+        fees: [
+            {item: 'Registration Fee', amount: 'KES 1,500'},
+            {item: 'Tuition (per month)', amount: 'KES 6,500'},
+            {item: 'Assessment Fee', amount: 'KES 2,000 - 4,000'},
+            {item: 'CILS Exam Registration', amount: 'At cost'},
+            {item: 'Study Materials', amount: 'Included'},
+            {item: 'Cultural Activities', amount: 'Included'}
+        ]
+    }
+};
+
+// ===== LOAD COURSE =====
+function loadCourse() {
+    const params = new URLSearchParams(window.location.search);
+    const courseId = params.get('course') || 'arabic';
+    const course = courses[courseId];
+
+    if (!course) {
+        document.getElementById('courseContent').innerHTML = `
+            <div style="grid-column:1/-1">
+                <div class="course-error">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <h2>Course Not Found</h2>
+                    <p>The program you're looking for doesn't exist. <a href="index.html#programs">Browse all programs →</a></p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    // Set breadcrumb
+    document.getElementById('courseTitleMain').innerHTML = `${course.name} <span>Details</span>`;
+    document.getElementById('breadcrumbCourse').textContent = course.name;
+
+    // Main image
+    const mainImg = document.getElementById('courseMainImage');
+    mainImg.src = course.img;
+    mainImg.alt = course.name;
+
+    // Info card
+    document.getElementById('courseBadge').textContent = course.badge;
+    document.getElementById('courseName').textContent = course.name;
+    document.getElementById('courseDuration').textContent = course.duration;
+    document.getElementById('courseLevel').textContent = course.level;
+    document.getElementById('courseMode').textContent = course.mode;
+    document.getElementById('courseDescription').textContent = course.description;
+
+    // Curriculum
+    const curricList = document.getElementById('curriculumList');
+    curricList.innerHTML = course.curriculum.map(item =>
+        `<li><i class="fa-solid fa-check-circle"></i> ${item}</li>`
+    ).join('');
+
+    // Levels
+    const levelGrid = document.getElementById('levelGrid');
+    levelGrid.innerHTML = course.levels.map(level =>
+        `<div class="level-card"><div class="level-name">${level.name}</div><div class="level-desc">${level.desc}</div></div>`
+    ).join('');
+
+    // Outcomes
+    const outcomesList = document.getElementById('outcomesList');
+    outcomesList.innerHTML = course.outcomes.map(item =>
+        `<li><i class="fa-solid fa-star"></i> ${item}</li>`
+    ).join('');
+
+    // Fees
+    const feesList = document.getElementById('feesList');
+    feesList.innerHTML = course.fees.map(f =>
+        `<li><i class="fa-solid fa-money-bill-wave"></i> <strong>${f.item}:</strong> ${f.amount}</li>`
+    ).join('');
+
+    // Sidebar
+    document.getElementById('sidebarDuration').textContent = course.duration;
+    document.getElementById('sidebarLevel').textContent = course.level;
+    document.getElementById('sidebarDelivery').textContent = course.mode;
+    document.getElementById('sidebarCert').textContent = course.cert;
+    document.getElementById('sidebarFee').innerHTML = `KES ${course.fee}<small>/month</small>`;
+
+    // Related programs (show 4 other courses)
+    const relatedGrid = document.getElementById('relatedGrid');
+    const otherCourses = Object.entries(courses).filter(([id]) => id !== courseId).slice(0, 4);
+    relatedGrid.innerHTML = otherCourses.map(([id, c]) => `
+        <a href="course-details.html?course=${id}" class="related-card">
+            <img src="${c.img}" alt="${c.name}" onerror="this.style.background='#089632';this.style.minHeight='140px'">
+            <div class="related-body">
+                <h4>${c.name}</h4>
+                <p>${c.duration}</p>
+                <span class="related-tag">${c.badge}</span>
+            </div>
+        </a>
+    `).join('');
+
+    // Update page title
+    document.title = `${course.name} — Course Details | IJLAPS`;
+
+    console.log(`✅ Loaded course: ${course.name}`);
+}
+
+// ===== TABS =====
+document.addEventListener('click', function(e) {
+    const tabHeader = e.target.closest('.tab-header');
+    if (!tabHeader) return;
+
+    const tabName = tabHeader.dataset.tab;
+    const parent = tabHeader.closest('.course-tabs');
+
+    parent.querySelectorAll('.tab-header').forEach(h => h.classList.remove('active'));
+    parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+    tabHeader.classList.add('active');
+    document.getElementById(`tab-${tabName}`).classList.add('active');
+});
+
+// ===== REVEAL ANIMATIONS =====
+function setupReveals() {
+    const elements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    elements.forEach(el => observer.observe(el));
+}
+
+// ===== BACK TO TOP =====
+window.addEventListener('scroll', () => {
+    document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+    loadCourse();
+    setupReveals();
+});
+</script>
+</body>
+</html>
