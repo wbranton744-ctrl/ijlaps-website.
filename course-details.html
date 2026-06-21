@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        /* Lock horizontal scrolling globally */
+        html, body {
+         max-width: 100%;
+         overflow-x: hidden;
+         width: 100vw;
+        }
+
         *{margin:0;padding:0;box-sizing:border-box}
         html{scroll-behavior:smooth}
         body{font-family:'Inter',sans-serif;color:#1a1a2e;background:#f9fafb;line-height:1.6}
@@ -57,7 +64,7 @@
         .course-details{padding:60px 0}
         .course-details .container{display:grid;grid-template-columns:2fr 1fr;gap:40px;align-items:start}
 
-        /* Left Column */
+        
         .course-main-image{width:100%;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:30px}
         .course-main-image img{width:100%;height:400px;object-fit:cover}
         .course-info-card{background:var(--white);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);margin-bottom:24px}
@@ -161,6 +168,177 @@
         .back-to-top{position:fixed;bottom:30px;right:30px;width:44px;height:44px;border-radius:50%;background:var(--green);color:var(--white);border:none;font-size:1.1rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,118,36,.3);transition:var(--transition);opacity:0;transform:translateY(20px);pointer-events:none;z-index:999;display:flex;align-items:center;justify-content:center}
         .back-to-top.visible{opacity:1;transform:translateY(0);pointer-events:all}
         .back-to-top:hover{background:var(--gold);transform:translateY(-3px)}
+
+        /* ===== MOBILE SCREEN MEDIA QUERY (Phones & Tablets) ===== */
+@media screen and (max-width: 768px) {
+    
+    /* 1. Reset Global Section Spacing */
+    .container {
+        padding: 0 15px; 
+    }
+
+    .section-header {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: 26px; 
+    }
+
+    /* 2. Fix the Programs Section Grid Layout */
+    .programs-grid {
+        display: grid;
+        grid-template-columns: 1fr; /* Forces cards to drop into a single, clean vertical column stack */
+        gap: 20px; 
+    }
+
+    .program-card {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    /* 3. The Testimonials Section Wrapper and Slider */
+    .testimonials-wrapper {
+        padding: 0 10px;
+    }
+
+    .testimonial-card {
+        padding: 20px 15px; 
+    }
+
+    .testimonial-text p {
+        font-size: 14px; 
+        line-height: 1.5;
+    }
+
+    /* 4. Reposition Navigation Arrows For Thumbs */
+    .slider-nav {
+        display: flex;
+        justify-content: space-between;
+        top: auto;
+        bottom: -60px; 
+        transform: none;
+        width: 120px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+    }
+
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+    }
+}
+/* Lock horizontal scrolling globally */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    width: 100vw;
+}
+
+/* ===== COURSE DETAILS MOBILE HEADER FIX ===== */
+@media screen and (max-width: 768px) {
+    
+    
+    .header .container {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 6px 12px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    
+    .logo {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        max-width: 75% !important; 
+        gap: 8px !important;
+    }
+
+    .logo-img {
+        height: 44px !important;
+        width: auto !important;
+    }
+
+    .logo-text {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    
+    .logo-text h1 {
+        font-family: 'Georgia', 'Times New Roman', serif !important;
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        color: #111111 !important;
+        margin: 0 !important;
+        display: block !important;
+        overflow: visible !important;
+        white-space: normal !important;
+    }
+
+    .logo-text span {
+        font-size: 9px !important;
+        color: #666666 !important;
+        margin-top: 2px !important;
+        display: block !important;
+    }
+
+    
+    .details-nav {
+        display: flex !important;
+        align-items: center !important;
+        margin-left: auto !important;
+    }
+
+    
+    .nav-link-desktop {
+        display: none !important;
+    }
+
+    
+    .btn-back {
+        background-color: #004900 !important; 
+        color: #ffffff !important;
+        padding: 8px 12px !important;
+        border-radius: 6px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+        border: none !important;
+        position: static !important;
+    }
+
+    
+    .btn-back span {
+        display: inline !important;
+    }
+    
+    
+    @media screen and (max-width: 380px) {
+        .btn-back span {
+            display: none !important; 
+        }
+        .btn-back {
+            padding: 10px !important;
+            border-radius: 50% !important; 
+            font-size: 14px !important;
+        }
+    }
+}
+
+
     </style>
 </head>
 <body>
@@ -187,13 +365,16 @@
                 <span>Since 2007 — Course Details</span>
             </div>
         </a>
-        <div class="header-right">
-            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-            <a href="index.html#programs">Programs</a>
-            <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        
+        <!-- Updated class wrapper below for better mobile targeting -->
+        <div class="header-right details-nav">
+            <a href="index.html" class="nav-link-desktop"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="index.html#programs" class="nav-link-desktop">Programs</a>
+            <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> <span>Back to Home</span></a>
         </div>
     </div>
 </header>
+
 
 <!-- ===== BREADCRUMB ===== -->
 <section class="breadcrumb-bar" id="breadcrumbBar">
